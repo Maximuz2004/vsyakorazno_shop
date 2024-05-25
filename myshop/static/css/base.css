@@ -328,3 +328,12 @@ form div.field {
     color:#666;
     border-radius:4px;
 }
+
+footer {
+    background-color: #f8f7f7;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
