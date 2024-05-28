@@ -29,7 +29,14 @@
               </a>
             </td>
             <td>{{ product.name }}</td>
-            <td>{{ item.quantity }}</td>
+            <td>
+              <form action='{% url "cart:cart_add" product.id %}' method='post'>
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.override }}
+                <input type='submit' value='Обновить'>
+                {% csrf_token %}
+              </form>
+            </td>
             <td>
               <form action='{% url "cart:cart_remove" product.id %}'
                     method='post'>
@@ -38,7 +45,7 @@
               </form>
             </td>
             <td class='num'>${{ item.price }}</td>
-            <td class='num'>${{ item.totel_price }}</td>
+            <td class='num'>${{ item.total_price }}</td>
           </tr>
         {% endwith %}
       {% endfor %}
@@ -53,6 +60,6 @@
     <a href='{% url "shop:product_list" %}' class="button light">
       Продолжить покупки
     </a>
-    <a href='#'>Checkout</a>
+    <a href='#' class=button>Checkout</a>
   </p>
 {% endblock %}
