@@ -1,10 +1,20 @@
 {% load static %}
 <div id="header">
-    <a href="/" class="logo">ВсякоРазно</a>
+  <a href="/" class="logo">ВсякоРазно</a>
 </div>
 <div id="subheader">
   <div class="cart">
-    Ваша корзина пуста
+    {% with total_items=cart|length %}
+      {% if total_items > 0 %}
+        Ваша корзина:
+        <a href="{% url "cart:cart_detail" %}">
+          {{ total_items }} товаров, на сумму
+          ${{ cart.get_total_price }}
+        </a>
+      {% else %}
+        Ваша корзина пуста
+      {% endif %}
+    {% endwith %}
   </div>
 </div>
 

@@ -1,3 +1,4 @@
+from _decimal import InvalidOperation
 from decimal import Decimal
 
 from django.conf import settings
@@ -49,12 +50,18 @@ class Cart:
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
 
-
     def get_total_price(self):
-        return sum(
-            Decimal(item['price'] * item['quantity'])
-            for item in self.cart.values()
-        )
+        total = Decimal('0.00')
+        for item in self.cart.values():
+            try:
+                price = Decimal(item['price'])
+                quantity = Decimal(item['quantity'])
+                total += price * quantity
+            except InvalidOperation as e:
+                print(
+                    f"Error converting price or quantity to Decimal: {e}, item: {item}")
+                continue
+        return total
 
     def clear(self):
         del self.session[settings.CART_SESSION_ID]
