@@ -60,6 +60,6 @@
     <a href='{% url "shop:product_list" %}' class="button light">
       Продолжить покупки
     </a>
-    <a href='#' class=button>Checkout</a>
+    <a href='{% url "orders:order_create" %}' class=button>Заказать</a>
   </p>
 {% endblock %}

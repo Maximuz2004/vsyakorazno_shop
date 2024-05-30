@@ -11,7 +11,7 @@
           {{ total_items }} товаров, на сумму
           ${{ cart.get_total_price }}
         </a>
-      {% else %}
+      {% elif not order %}
         Ваша корзина пуста
       {% endif %}
     {% endwith %}
