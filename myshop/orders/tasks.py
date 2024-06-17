@@ -15,7 +15,7 @@ def order_created(order_id):
 
     subject = f'Заказ № {order.id}'
     message = (f'Дорогой {order.first_name}, \n\n'
-               f'ваш заказ успешно размещен.'
+               f'ваш заказ успешно размещен.\n'
                f'Номер вашего заказа {order.id}')
 
     try:
@@ -36,3 +36,4 @@ def order_created(order_id):
 #  celery -A myshop worker -l info -P eventlet
 # Запуск flower:
 # celery -A myshop flower
+# todo посмотреть коммент: https://ru.stackoverflow.com/questions/1522508/djangocelery-%D0%BD%D0%B5-%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D1%8F%D0%B5%D1%82%D1%81%D1%8F-task

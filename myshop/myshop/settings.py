@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
     'django_celery_results',
 ]
 
@@ -87,6 +88,10 @@ SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 
 CELERY_RESULT_BACKEND = 'django-db'
+
+# Конфигурация Yoo_kassa
+YK_SHOP_ID = os.getenv('YK_SHOP_ID', default=404011)
+YK_SECRET_KEY=os.getenv('YK_SECRET_KEY', default='test_TxdqSKhzIWLgV8X_J8IOyIJQ9oFYrwehKde5_kRRqYU')
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

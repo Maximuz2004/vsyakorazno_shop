@@ -6,7 +6,8 @@ from shop.models import Product
 class Order(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField()
+    email = models.EmailField('электронная почта')
+    phone = models.CharField('телефон', max_length=30, blank=True)
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
@@ -21,10 +22,14 @@ class Order(models.Model):
         ]
 
     def __str__(self):
-        return f'Order {self.id}'
+        return f'Заказ № {self.id}'
 
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class OrderItem(models.Model):
