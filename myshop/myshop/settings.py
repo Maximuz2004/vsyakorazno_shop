@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
@@ -23,6 +22,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='default')
 DEBUG = True
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='*').split(' ')
+if DEBUG:
+    SITE_DOMAIN = ALLOWED_HOSTS[0] + ':8000'
+else:
+    SITE_DOMAIN = ALLOWED_HOSTS[1] # todo  заменить на свой сайт
 
 CART_SESSION_ID = 'cart'
 
@@ -33,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shop.apps.ShopConfig',
@@ -74,6 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myshop.wsgi.application'
 
+SITE_ID = 1
 # Конфигурация сервера электронной почты
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -91,7 +96,8 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 # Конфигурация Yoo_kassa
 YK_SHOP_ID = os.getenv('YK_SHOP_ID', default=404011)
-YK_SECRET_KEY=os.getenv('YK_SECRET_KEY', default='test_TxdqSKhzIWLgV8X_J8IOyIJQ9oFYrwehKde5_kRRqYU')
+YK_SECRET_KEY = os.getenv('YK_SECRET_KEY',
+                          default='test_TxdqSKhzIWLgV8X_J8IOyIJQ9oFYrwehKde5_kRRqYU')
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -131,7 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -142,7 +147,6 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

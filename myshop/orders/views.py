@@ -35,4 +35,4 @@ def order_create(request):
 
 def order_detail(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
-    return render(request, 'orders/order/order.html', order)
+    return render(request, 'orders/order/order.html', {'order': order})

@@ -9,7 +9,7 @@
         Ваша корзина:
         <a href="{% url "cart:cart_detail" %}">
           {{ total_items }} товаров, на сумму
-          ${{ cart.get_total_price }}
+          {{ cart.get_total_price }} руб
         </a>
       {% elif not order %}
         Ваша корзина пуста

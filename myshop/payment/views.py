@@ -4,8 +4,11 @@ import json
 import uuid
 
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.contrib.sites.models import Site
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import redirect, render, reverse, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from yookassa import Configuration, Payment
 from yookassa.domain.common.confirmation_type import ConfirmationType
@@ -62,7 +65,10 @@ def payment_process(request, return_url=None):
             })
 
         if return_url is None:
-            return_url = reverse('orders:order_detail', args=[order.id])
+            return_url = 'http://{}{}'.format(
+                settings.SITE_DOMAIN,
+                reverse('payment:completed')
+            )
 
         payment_details = {
             'amount': {
@@ -94,6 +100,17 @@ def payment_process(request, return_url=None):
         return HttpResponseRedirect(payment.confirmation.confirmation_url)
     else:
         return render(request, 'payment/process.html', locals())
+
+
+@require_POST
+@csrf_exempt
+def callback(request):
+    if request.body:
+        data = json.loads(request.body.decode('utf-8'))
+    else:
+        return HttpResponseForbidden()
+    logger.debug(data)
+
 
 
 def payment_completed(request):
