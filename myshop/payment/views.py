@@ -5,20 +5,22 @@ import uuid
 
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import (HttpResponseRedirect, HttpResponseForbidden,
+                         HttpResponse)
 from django.shortcuts import redirect, render, reverse, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from yookassa import Configuration, Payment
+from yookassa import Configuration, Payment, Webhook
 from yookassa.domain.common.confirmation_type import ConfirmationType
 from yookassa.domain.models import Currency
 from yookassa.domain.models.receipt import Receipt, ReceiptItem
-from yookassa.domain.notification import WebhookNotification
-from yookassa.domain.request.payment_request_builder import PaymentRequestBuilder
+from yookassa.domain.notification import WebhookNotification, \
+    WebhookNotificationEventType
+from yookassa.domain.request.payment_request_builder import \
+    PaymentRequestBuilder
 
 from orders.models import Order
-
 
 logger = logging.getLogger('yandex_kassa')
 
@@ -41,8 +43,10 @@ CANCELLATION_REASONS = {
     'payment_method_limit_exceeded': 'исчерпан лимит платежей для данного платежного средства или вашего магазина',
     'payment_method_restricted': 'запрещены операции данным платежным средством',
     'permission_revoked': 'нельзя провести безакцептное списание, пользователь отозвал разрешение на автоплатежи',
-    'unsupported_mobile_operator': 'нельзя заплатить с номера телефона этого мобильного оператора'
+    'unsupported_mobile_operator': 'нельзя заплатить с номера телефона этого мобильного оператора',
+    'unknown_reason': 'неизвестная причина'
 }
+FAILED_PAYMENT_STATUS = 'Не удалось обработать статус платежа'
 
 Configuration.account_id = settings.YK_SHOP_ID
 Configuration.secret_key = settings.YK_SECRET_KEY
@@ -76,7 +80,7 @@ def payment_process(request, return_url=None):
                 'currency': Currency.RUB
             },
             'receipt': {
-                'customer':{
+                'customer': {
                     'phone': order.phone,
                     'email': order.email,
                     'full_name': order.full_name
@@ -96,7 +100,7 @@ def payment_process(request, return_url=None):
             'description': str(order)
 
         }
-        payment = Payment.create(payment_details, str(uuid.uuid4()))
+        payment = Payment.create(payment_details)
         return HttpResponseRedirect(payment.confirmation.confirmation_url)
     else:
         return render(request, 'payment/process.html', locals())
@@ -108,9 +112,45 @@ def callback(request):
     if request.body:
         data = json.loads(request.body.decode('utf-8'))
     else:
-        return HttpResponseForbidden()
+        return HttpResponse(status=403)
     logger.debug(data)
-
+    try:
+        notification = WebhookNotification(data)
+        if notification.event == 'refund.succeeded':
+            return HttpResponse(status=200)
+        payment = notification.object
+        order = Order.objects.get(
+            id=int(
+                payment.metadata.get(
+                    'order_id',
+                    payment.metadata.get('orderNumber', '-1')
+                )
+            )
+        )
+        payment_message = None
+        if not order.paid:
+            if payment.paid:
+                payment_message = 'Получено уведомление об оплате'
+            if payment.status == 'canceled':
+                if payment.cancellation_details:
+                    payment_message = 'Оплата отклонена: {}'.format(
+                        CANCELLATION_REASONS.get(
+                            payment.cancellation_details.reason,
+                            CANCELLATION_REASONS.get('unknown_reason')
+                        )
+                    )
+                else:
+                    payment_message = CANCELLATION_REASONS.get(
+                        'unknown_reason'
+                    )
+        logger.info(payment_message)
+        order.paid = True
+        order.payment_id = payment.id
+        order.save()
+    except Exception:
+        logger.exception(FAILED_PAYMENT_STATUS)
+        return HttpResponse(status=403)
+    return HttpResponse(status=200)
 
 
 def payment_completed(request):
