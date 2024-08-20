@@ -42,11 +42,17 @@ def export_to_csv(modeladmin, request, queryset):
 export_to_csv.short_description = 'Экспорт в  CSV'
 
 
+def order_pdf(obj):
+    url = reverse('orders:admin_order_pdf', args=[obj.id])
+    return mark_safe(f'<a href="{url}">to PDF</a>')
+
+order_pdf.short_description = 'Счет-Фактура'
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'first_name', 'last_name', 'email', 'address',
                     'postal_code', 'city', 'paid', 'created', 'updated',
-                    order_detail]
+                    order_detail, order_pdf]
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInLine]
     actions = [export_to_csv]

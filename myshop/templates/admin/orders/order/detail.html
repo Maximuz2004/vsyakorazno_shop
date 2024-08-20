@@ -22,34 +22,34 @@
     </ul>
     <table>
       <tr>
-        <th>Created</th>
+        <th>Создано</th>
         <td>{{ order.created }}</td>
       </tr>
       <tr>
-        <th>Customer</th>
+        <th>Покупатель</th>
         <td>{{ order.first_name }} {{ order.last_name }}</td>
       </tr>
       <tr>
-        <th>E-mail</th>
+        <th>Почта</th>
         <td><a href="mailto:{{ order.email }}">{{ order.email }}</a></td>
       </tr>
       <tr>
-        <th>Address</th>
+        <th>Адрес</th>
         <td>
           {{ order.address }}, 
           {{ order.postal_code }} {{ order.city }}
         </td>
       </tr>
       <tr>
-        <th>Total amount</th>
+        <th>Итоговая стоимость</th>
         <td>{{ order.get_total_cost }} руб</td>
       </tr>
       <tr>
-        <th>Status</th>
+        <th>Статус</th>
         <td>{% if order.paid %}Paid{% else %}Pending payment{% endif %}</td>
       </tr>
     <tr>
-      <th>Paiment id</th>
+      <th>Payment id</th>
       <td>
         {% if order.payment_id %}
         {{ order.payment_id }}
@@ -59,14 +59,14 @@
     </table>
   </div>
   <div class="module">
-    <h2>Items bought</h2>
+    <h2>Купленные товары</h2>
     <table style="width: 100%">
       <thead>
       <tr>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Total</th>
+        <th>Товар</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th>Итоговая стоимость</th>
       </tr>
       </thead>
       <tbody>
@@ -79,7 +79,7 @@
         </tr>
       {% endfor %}
       <tr class="total">
-        <td colspan="3">Total</td>
+        <td colspan="3">Итого</td>
         <td class="num">{{ order.get_total_cost }}</td>
       </tr>
       </tbody>
