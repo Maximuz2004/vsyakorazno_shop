@@ -20,6 +20,7 @@ from yookassa.domain.notification import WebhookNotification, \
 from yookassa.domain.request.payment_request_builder import \
     PaymentRequestBuilder
 
+from .tasks import payment_completed_send_email
 from orders.models import Order
 
 logger = logging.getLogger('yandex_kassa')
@@ -47,7 +48,6 @@ CANCELLATION_REASONS = {
     'unknown_reason': 'неизвестная причина'
 }
 FAILED_PAYMENT_STATUS = 'Не удалось обработать статус платежа'
-
 Configuration.account_id = settings.YK_SHOP_ID
 Configuration.secret_key = settings.YK_SECRET_KEY
 
@@ -67,13 +67,11 @@ def payment_process(request, return_url=None):
                 },
                 'vat_code': 1
             })
-
         if return_url is None:
             return_url = 'http://{}{}'.format(
                 settings.SITE_DOMAIN,
                 reverse('payment:completed')
             )
-
         payment_details = {
             'amount': {
                 'value': order.get_total_cost(),
@@ -147,6 +145,7 @@ def callback(request):
         order.paid = True
         order.payment_id = payment.id
         order.save()
+        payment_completed_send_email.delay(order.id)
     except Exception:
         logger.exception(FAILED_PAYMENT_STATUS)
         return HttpResponse(status=403)

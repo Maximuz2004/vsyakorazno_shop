@@ -30,7 +30,7 @@
           <td>{{ item.product.name }}</td>
           <td class="num">{{ item.price }} руб.</td>
           <td class="num">{{ item.quantity }}</td>
-          <td class="num">{{ item.cost }}</td>
+          <td class="num">{{ item.get_cost }}</td>
         </tr>
       {% endfor %}
       <tr class="total">
