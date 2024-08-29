@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'payment.apps.PaymentConfig',
     'django_celery_results',
+    'coupons.apps.CouponsConfig',
 ]
 
 MIDDLEWARE = [
