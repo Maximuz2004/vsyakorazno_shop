@@ -6,7 +6,7 @@ class Coupon(models.Model):
     code = models.CharField(
         verbose_name='Промокод',
         max_length=50,
-        unique=True
+        unique=True,
     )
     valid_from = models.DateTimeField(verbose_name='Действителен с')
     valid_to = models.DateTimeField(verbose_name='действителен до')

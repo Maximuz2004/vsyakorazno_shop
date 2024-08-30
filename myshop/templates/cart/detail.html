@@ -49,13 +49,38 @@
           </tr>
         {% endwith %}
       {% endfor %}
+      {% if cart.coupon %}
+        <tr class="subtotal">
+          <td>Промежуточный итог</td>
+          <td colspan="4"></td>
+          <td class="num">{{ cart.get_total_price|floatformat:2 }} руб</td>
+        </tr>
+        <tr>
+          <td>
+            "{{ cart.coupon.code }}" промокод
+            ({{ cart.coupon.discount }}% скидка)
+          </td>
+          <td colspan="4"></td>
+          <td class="num neg">
+            - {{ cart.get_discount|floatformat:2 }} руб
+          </td>
+        </tr>
+      {% endif %}
       <tr class='total'>
         <td>Итого:</td>
         <td colspan='4'></td>
-        <td class='num'>{{ cart.get_total_price }}</td>
+        <td class='num'>
+          {{ cart.get_total_price_after_discount|floatformat:2 }} руб
+        </td>
       </tr>
     </tbody>
   </table>
+  <form action="{% url 'coupons:apply' %}" method="post">
+    {{ form.code.label }}
+    {{ coupon_apply_form }}
+    <input type="submit" value="Применить">
+    {% csrf_token %}
+  </form>
   <p class='text-right'>
     <a href='{% url "shop:product_list" %}' class="button light">
       Продолжить покупки
