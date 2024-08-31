@@ -17,7 +17,7 @@
       {% endfor %}
       {% if cart.coupon %}
         <li>
-          "{{ cart.coupon.code }}" ({{ cart.coupon.dicount }}% скидка)
+          "{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% скидка)
           <span class="neg">- {{ cart.get_discount|floatformat:2 }} руб</span>
         </li>
       {% endif %}
