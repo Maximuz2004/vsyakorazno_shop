@@ -56,3 +56,8 @@ class Recommender:
     def clear_purchases(self):
         for id in Product.objects.values_list('id', flat=True):
             redis_conn.delete(self.get_product_key(id))
+
+#todo Реализовать механизм добавления купленных вместе покупок в базу:
+# 1. При совершении покупки
+# 2. При прямом внесении данных в Редис. Нужен скрипт и команда
+

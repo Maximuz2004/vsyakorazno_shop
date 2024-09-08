@@ -21,5 +21,23 @@
       <input type='submit' value='Добавить в корзину'>
     </form>
     {{ product.description|linebreaks }}
+    {% if recommended_products %}
+      <div class="recommendations">
+        <h3>С этим товаром также покупают:</h3>
+        {% for r_product in recommended_products %}
+          <div class="item">
+            <a href="{{ r_product.get_absolute_url }}">
+              <img src="{% if r_product.image %}{{ r_product.image.url }}
+              {% else %}{% static 'img/no_image.png' %}{% endif %}">
+            </a>
+            <p>
+              <a href="{{ r_product.get_absolute_url }}">
+                {{ r_product.name }}
+              </a>
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 {% endblock %}
