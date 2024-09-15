@@ -22,6 +22,7 @@ from yookassa.domain.request.payment_request_builder import \
 
 from .tasks import payment_completed_send_email
 from orders.models import Order
+from shop.recommender import Recommender
 
 logger = logging.getLogger('yandex_kassa')
 
@@ -56,6 +57,8 @@ def payment_process(request, return_url=None):
     order_id = request.session.get('order_id', None)
     order = get_object_or_404(Order, id=order_id)
     if request.method == 'POST':
+        recommender = Recommender()
+        products = []
         items = []
         for item in order.items.all():
             items.append({
@@ -67,6 +70,7 @@ def payment_process(request, return_url=None):
                 },
                 'vat_code': 1
             })
+            products.append(item.product)
         if return_url is None:
             return_url = 'http://{}{}'.format(
                 settings.SITE_DOMAIN,
@@ -99,6 +103,8 @@ def payment_process(request, return_url=None):
 
         }
         payment = Payment.create(payment_details)
+        if len(products) > 1:
+            recommender.products_bought(products)
         return HttpResponseRedirect(payment.confirmation.confirmation_url)
     else:
         return render(request, 'payment/process.html', locals())

@@ -99,7 +99,7 @@ CELERY_RESULT_BACKEND = 'django-db'
 # Конфигурация Yoo_kassa
 YK_SHOP_ID = os.getenv('YK_SHOP_ID', default=404011)
 YK_SECRET_KEY = os.getenv('YK_SECRET_KEY',
-                          default='test_TxdqSKhzIWLgV8X_J8IOyIJQ9oFYrwehKde5_kRRqYU')
+                          default='test_key123')
 
 # Database
 DATABASES = {
