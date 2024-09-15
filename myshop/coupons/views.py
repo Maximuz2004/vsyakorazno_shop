@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 
@@ -23,5 +23,3 @@ def coupon_apply(request):
         except Coupon.DoesNotExist:
             request.session['coupon_id'] = None
     return redirect('cart:cart_detail')
-
-#todo Купон отстается в Сессии, после совершения покупки. Нужно решить.

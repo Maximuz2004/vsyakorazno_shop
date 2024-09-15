@@ -1,24 +1,15 @@
-from decimal import Decimal
 import logging
 import json
-import uuid
 
 from django.conf import settings
-from django.contrib.sites.models import Site
-from django.http import (HttpResponseRedirect, HttpResponseForbidden,
-                         HttpResponse)
-from django.shortcuts import redirect, render, reverse, get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, reverse, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from yookassa import Configuration, Payment, Webhook
-from yookassa.domain.common.confirmation_type import ConfirmationType
+from yookassa import Configuration, Payment
 from yookassa.domain.models import Currency
-from yookassa.domain.models.receipt import Receipt, ReceiptItem
-from yookassa.domain.notification import WebhookNotification, \
-    WebhookNotificationEventType
-from yookassa.domain.request.payment_request_builder import \
-    PaymentRequestBuilder
+from yookassa.domain.notification import WebhookNotification
 
 from .tasks import payment_completed_send_email
 from orders.models import Order

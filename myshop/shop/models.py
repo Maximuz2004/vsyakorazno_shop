@@ -8,7 +8,7 @@ class Category(models.Model):
 
     class Meta:
         ordering = ['name']
-        indexes = [models.Index(fields=['name']),]
+        indexes = [models.Index(fields=['name']), ]
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
 
@@ -55,4 +55,3 @@ class Product(models.Model):
             'shop:product_detail',
             args=[self.id, self.slug]
         )
-

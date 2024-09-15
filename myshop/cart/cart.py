@@ -61,7 +61,8 @@ class Cart:
                 total += price * quantity
             except InvalidOperation as e:
                 print(
-                    f"Error converting price or quantity to Decimal: {e}, item: {item}")
+                    f"Error converting price or quantity to Decimal:"
+                    f" {e}, item: {item}")
                 continue
         return total
 

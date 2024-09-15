@@ -28,8 +28,8 @@ def product_list(request, category_slug=None):
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
     cart_product_form = CartAddProductForm()
-    recomender = Recommender()
-    recommended_products = recomender.suggest_products_for(
+    recommender = Recommender()
+    recommended_products = recommender.suggest_products_for(
         [product], max_results=4
     )
     return render(

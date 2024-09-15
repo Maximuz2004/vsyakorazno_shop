@@ -56,5 +56,3 @@ class Recommender:
     def clear_purchases(self):
         for id in Product.objects.values_list('id', flat=True):
             redis_conn.delete(self.get_product_key(id))
-
-
