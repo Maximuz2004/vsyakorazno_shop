@@ -1,18 +1,35 @@
+{% load i18n %}
 {% load static %}
 <div id="header">
-  <a href="/" class="logo">ВсякоРазно</a>
+  <a href="/" class="logo">{% trans 'ВсякоРазно' %}</a>
+  {% get_current_language as LANGUAGE_CODE %}
+  {% get_available_languages as LANGUAGES %}
+  {% get_language_info_list for LANGUAGES as languages %}
+  <div class="languages">
+    <p>{% trans "Язык" %}:</p>
+    <ul class="languages">
+      {% for language in languages %}
+        <li>
+          <a href="/{{ language.code }}/"
+            {% if language.code == LANGUAGE_CODE %} class="selected"{% endif %}>
+            {{ language.name_local }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
 <div id="subheader">
   <div class="cart">
     {% with total_items=cart|length %}
       {% if total_items > 0 %}
-        Ваша корзина:
+        {% trans 'Ваша корзина:' %}
         <a href="{% url "cart:cart_detail" %}">
-          {{ total_items }} товаров, на сумму
-          {{ cart.get_total_price }} руб
+          {{ total_items }} {% trans 'товаров, на сумму' %}
+          {{ cart.get_total_price }} {% trans 'руб' %}
         </a>
       {% elif not order %}
-        Ваша корзина пуста
+        {% trans 'Ваша корзина пуста' %}
       {% endif %}
     {% endwith %}
   </div>

@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-09-15 15:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\cart\forms.py:12
+msgid "Количество"
+msgstr ""
+
+#: .\coupons\forms.py:6
+msgid "Промокод"
+msgstr ""
+
+#: .\myshop\settings.py:147
+msgid "Russian"
+msgstr "Русский"
+
+#: .\myshop\settings.py:148
+msgid "English"
+msgstr "Английский"
+
+#: .\orders\models.py:12
+msgid "Имя"
+msgstr ""
+
+#: .\orders\models.py:13
+msgid "Фамилия"
+msgstr ""
+
+#: .\orders\models.py:14
+msgid "электронная почта"
+msgstr ""
+
+#: .\orders\models.py:15
+msgid "телефон"
+msgstr ""
+
+#: .\orders\models.py:16
+msgid "адрес"
+msgstr ""
+
+#: .\orders\models.py:17
+msgid "индекс"
+msgstr ""
+
+#: .\orders\models.py:18
+msgid "город"
+msgstr ""
+
+#: .\templates\base.html:21
+msgid "Контент не подвезли :("
+msgstr ""
+
+#: .\templates\includes\header.html:4
+msgid "ВсякоРазно"
+msgstr ""
+
+#: .\templates\includes\header.html:10
+msgid "Ваша корзина:"
+msgstr ""
+
+#: .\templates\includes\header.html:12
+msgid "товаров, на сумму"
+msgstr ""
+
+#: .\templates\includes\header.html:13 .\templates\orders\order\create.html:26
+msgid "руб"
+msgstr ""
+
+#: .\templates\includes\header.html:16
+msgid "Ваша корзина пуста"
+msgstr ""
+
+#: .\templates\orders\order\create.html:5
+#: .\templates\orders\order\create.html:9
+msgid "Заказ"
+msgstr ""
+
+#: .\templates\orders\order\create.html:11
+msgid "Ваш заказ"
+msgstr ""
+
+#: .\templates\orders\order\create.html:21
+msgid "скидка"
+msgstr ""
+
+#: .\templates\orders\order\create.html:26
+msgid "Всего:"
+msgstr ""
+
+#: .\templates\orders\order\create.html:30
+msgid "Разместить заказ"
+msgstr ""
+
+#: .\templates\product\detail.html:22
+msgid "Добавить в корзину"
+msgstr ""
+
+#: .\templates\product\detail.html:27
+msgid "С этим товаром также покупают:"
+msgstr ""

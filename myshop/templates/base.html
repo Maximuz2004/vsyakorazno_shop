@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
@@ -17,12 +18,12 @@
 <main>
   <div id="content">
     {% block content %}
-      Контент не подвезли :(
+      {% trans 'Контент не подвезли :(' %}
     {% endblock %}
   </div>
 </main>
-{#<footer>#}
-{#  {% include 'includes/footer.html' %}#}
-{#</footer>#}
+<footer>
+  {% include 'includes/footer.html' %}
+</footer>
 </body>
 </html>
